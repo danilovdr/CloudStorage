@@ -3,8 +3,8 @@ using CloudStorage.BLL.Services;
 using CloudStorage.DAL.Context;
 using CloudStorage.DAL.Interfaces.Context;
 using CloudStorage.DAL.Interfaces.Interfaces;
-using CloudStorage.DAL.Interfaces.Models;
 using CloudStorage.DAL.Repositories;
+using CloudStorage.DomainModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -66,6 +66,9 @@ namespace WebApplication1
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -75,7 +78,7 @@ namespace WebApplication1
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = @"C:\Users\patri\source\repos\CloudStorage\CloudStorage.WebClient\cloud-storage\";
+                spa.Options.SourcePath = @"..\CloudStorage.WebClient\ClientApp\";
 
                 if (env.IsDevelopment())
                 {

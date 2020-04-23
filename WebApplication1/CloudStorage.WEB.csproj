@@ -26,6 +26,7 @@
     <ProjectReference Include="..\CloudStorage.BLL\CloudStorage.BLL.csproj" />
     <ProjectReference Include="..\CloudStorage.DAL.Interfaces\CloudStorage.DAL.Interfaces.csproj" />
     <ProjectReference Include="..\CloudStorage.DAL\CloudStorage.DAL.csproj" />
+    <ProjectReference Include="..\CloudStorage.DomainModels\CloudStorage.DomainModels.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -1,4 +1,4 @@
-﻿using CloudStorage.DAL.Interfaces.Models;
+﻿using CloudStorage.DomainModels;
 
 namespace CloudStorage.DAL.Interfaces.Interfaces
 {

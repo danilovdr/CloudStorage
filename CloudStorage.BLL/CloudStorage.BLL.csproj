@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CloudStorage.BLL.Interfaces\CloudStorage.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\CloudStorage.DAL.Interfaces\CloudStorage.DAL.Interfaces.csproj" />
+    <ProjectReference Include="..\CloudStorage.DomainModels\CloudStorage.DomainModels.csproj" />
   </ItemGroup>
 
 </Project>

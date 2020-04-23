@@ -4,7 +4,8 @@ namespace CloudStorage.BLL.Interfaces.Services
 {
     public interface IUserService
     {
-        long Registration(UserCreatedDTO userCreated);
-        void UpdateUserInfo(UserUpdatedDTO userUpdated);
+        void Login(UserLoginDTO userLogin);
+        long Registration(UserCreateDTO userCreated);
+        void UpdateUser(UserUpdateDTO userUpdated);
     }
 }

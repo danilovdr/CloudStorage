@@ -1,41 +1,54 @@
-﻿using CloudStorage.DAL.Interfaces.Interfaces;
-using CloudStorage.DAL.Interfaces.Models;
+﻿using CloudStorage.DAL.Interfaces.Context;
+using CloudStorage.DAL.Interfaces.Interfaces;
+using CloudStorage.DomainModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace CloudStorage.DAL.Repositories
 {
     public class FileRepository : IRepository<File>
     {
-        public void Create(File item)
+        public FileRepository(IApplicationDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public void Delete(int id)
+        private IApplicationDbContext _dbContext;
+
+        public long Create(File item)
         {
-            throw new NotImplementedException();
+            _dbContext.Files.Add(item);
+            return _dbContext.Files.Last().Id;
         }
 
-        public IEnumerable<File> Find(Func<File, bool> predicate)
+        public void Delete(long id)
         {
-            throw new NotImplementedException();
+            File deletedFile = _dbContext.Files.Find(id);
+
+            if (deletedFile != null)
+            {
+                _dbContext.Files.Remove(deletedFile);
+            }
         }
 
-        public File Get(int id)
+        public IQueryable<File> Find(Func<File, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _dbContext.Files.Where(predicate).AsQueryable();
         }
 
-        public IEnumerable<File> GetAll()
+        public File Get(long id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Files.Find(id);
+        }
+
+        public IQueryable<File> GetAll()
+        {
+            return _dbContext.Files;
         }
 
         public void Update(File item)
         {
-            throw new NotImplementedException();
+            _dbContext.Files.Update(item);
         }
     }
 }

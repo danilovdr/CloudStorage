@@ -23,28 +23,17 @@ namespace CloudStorage.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult Registration(UserCreatedDTO userCreated)
+        public ActionResult Registration(UserCreateDTO userCreated)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             long id = _userService.Registration(userCreated);
             return Json(id);
         }
 
         [HttpPut]
         [Authorize]
-        public ActionResult Update(UserUpdatedDTO userUpdated)
+        public ActionResult Update(UserUpdateDTO userUpdated)
         {
-            string name = User.Identity.Name;
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _userService.UpdateUserInfo(userUpdated);
+            _userService.UpdateUser(userUpdated);
             return Ok();
         }
     }

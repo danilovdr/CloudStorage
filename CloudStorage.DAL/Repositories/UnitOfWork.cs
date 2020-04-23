@@ -1,7 +1,7 @@
 ﻿using CloudStorage.DAL.Interfaces.Context;
 using CloudStorage.DAL.Interfaces.Interfaces;
-using CloudStorage.DAL.Interfaces.Models;
- 
+using CloudStorage.DomainModels;
+
 namespace CloudStorage.DAL.Repositories
 {
     class UnitOfWork : IUnitOfWork

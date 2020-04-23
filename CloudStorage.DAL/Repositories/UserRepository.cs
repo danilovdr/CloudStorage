@@ -1,40 +1,54 @@
-﻿using CloudStorage.DAL.Interfaces.Interfaces;
-using CloudStorage.DAL.Interfaces.Models;
+﻿using CloudStorage.DAL.Interfaces.Context;
+using CloudStorage.DAL.Interfaces.Interfaces;
+using CloudStorage.DomainModels;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace CloudStorage.DAL.Repositories
 {
     public class UserRepository : IRepository<User>
     {
-        public void Create(User item)
+        public UserRepository(IApplicationDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public void Delete(int id)
+        private IApplicationDbContext _dbContext;
+
+        public long Create(User item)
         {
-            throw new NotImplementedException();
+            _dbContext.Users.Add(item);
+            return _dbContext.Users.Last().Id;
         }
 
-        public IEnumerable<User> Find(Func<User, bool> predicate)
+        public void Delete(long id)
         {
-            throw new NotImplementedException();
+            User deletedUser = _dbContext.Users.FirstOrDefault(p => p.Id == id);
+
+            if (deletedUser != null)
+            {
+                _dbContext.Users.Remove(deletedUser);
+            }
         }
 
-        public User Get(int id)
+        public IQueryable<User> Find(Func<User, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _dbContext.Users.Where(predicate).AsQueryable();
         }
 
-        public IEnumerable<User> GetAll()
+        public User Get(long id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Users.Find(id);
+        }
+
+        public IQueryable<User> GetAll()
+        {
+            return _dbContext.Users;
         }
 
         public void Update(User item)
         {
-            throw new NotImplementedException();
+            _dbContext.Users.Update(item);
         }
     }
 }

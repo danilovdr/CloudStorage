@@ -1,4 +1,4 @@
-﻿namespace CloudStorage.DAL.Interfaces.Models
+﻿namespace CloudStorage.DomainModels
 {
     public class User
     {

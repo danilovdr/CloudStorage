@@ -1,5 +1,5 @@
 ﻿using CloudStorage.DAL.Interfaces.Context;
-using CloudStorage.DAL.Interfaces.Models;
+using CloudStorage.DomainModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloudStorage.DAL.Context
