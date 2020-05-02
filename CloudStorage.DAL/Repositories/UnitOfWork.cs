@@ -4,7 +4,7 @@ using CloudStorage.DomainModels;
 
 namespace CloudStorage.DAL.Repositories
 {
-    class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private IApplicationDbContext _dbContext;
         public IRepository<User> Users { get; set; }

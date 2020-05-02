@@ -18,7 +18,8 @@ namespace CloudStorage.DAL.Repositories
         public long Create(User item)
         {
             _dbContext.Users.Add(item);
-            return _dbContext.Users.Last().Id;
+            //return _dbContext.Users.Last().Id;
+            return -1;
         }
 
         public void Delete(long id)

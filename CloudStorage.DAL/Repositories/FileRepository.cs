@@ -18,7 +18,8 @@ namespace CloudStorage.DAL.Repositories
         public long Create(File item)
         {
             _dbContext.Files.Add(item);
-            return _dbContext.Files.Last().Id;
+            //return _dbContext.Files.Last().Id;
+            return 0;
         }
 
         public void Delete(long id)

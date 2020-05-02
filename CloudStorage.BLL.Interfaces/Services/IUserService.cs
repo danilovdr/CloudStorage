@@ -1,11 +1,13 @@
-﻿using CloudStorage.BLL.Interfaces.DTO;
+﻿using CloudStorage.BLL.Interfaces.Models;
+using CloudStorage.DomainModels;
 
 namespace CloudStorage.BLL.Interfaces.Services
 {
     public interface IUserService
     {
-        void Login(UserLoginDTO userLogin);
-        long Registration(UserCreateDTO userCreated);
-        void UpdateUser(UserUpdateDTO userUpdated);
+        long Registration(CreateAccountDTO userCreated);
+        User GetUserByName(string name);
+        bool HasUser(string name, string password);
+        void UpdateUser(UpdateUserDTO userUpdated);
     }
 }

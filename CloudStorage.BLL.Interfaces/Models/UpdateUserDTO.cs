@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CloudStorage.BLL.Interfaces.DTO
+namespace CloudStorage.BLL.Interfaces.Models
 {
-    public class UserUpdateDTO
+    public class UpdateUserDTO
     {
         [Required]
         public long Id { get; set; }

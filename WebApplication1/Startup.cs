@@ -5,6 +5,7 @@ using CloudStorage.DAL.Interfaces.Context;
 using CloudStorage.DAL.Interfaces.Interfaces;
 using CloudStorage.DAL.Repositories;
 using CloudStorage.DomainModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -32,11 +33,17 @@ namespace WebApplication1
 
             services.AddTransient<IRepository<User>, UserRepository>();
             services.AddTransient<IRepository<File>, FileRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
              options.UseSqlite(connectionString));
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+             .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory

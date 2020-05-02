@@ -9,7 +9,8 @@ namespace CloudStorage.DomainModels
         public string Path { get; set; }
         public string Content { get; set; }
 
-        public User Owner { get; set; }
-        public List<User> HasAccess { get; set; }
+        public string OwnerUserName { get; set; }
+        public List<string> HasAccessUserName { get; set; }
+        public long FolderId { get; set; }
     }
 }

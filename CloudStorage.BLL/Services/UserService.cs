@@ -1,5 +1,5 @@
 ﻿using CloudStorage.BLL.Exceptions;
-using CloudStorage.BLL.Interfaces.DTO;
+using CloudStorage.BLL.Interfaces.Models;
 using CloudStorage.BLL.Interfaces.Services;
 using CloudStorage.DAL.Interfaces.Interfaces;
 using CloudStorage.DomainModels;
@@ -16,12 +16,7 @@ namespace CloudStorage.BLL.Services
 
         private IUnitOfWork _unitOfWork;
 
-        public void Login(UserLoginDTO userLogin)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public long Registration(UserCreateDTO userCreate)
+        public long Registration(CreateAccountDTO userCreate)
         {
             if (_unitOfWork.Users.Find(p => p.Name == userCreate.Name).Any())
             {
@@ -45,7 +40,17 @@ namespace CloudStorage.BLL.Services
             return id;
         }
 
-        public void UpdateUser(UserUpdateDTO userUpdate)
+        public User GetUserByName(string name)
+        {
+            return _unitOfWork.Users.Find(p => p.Name == name).FirstOrDefault();
+        }
+
+        public bool HasUser(string name, string password)
+        {
+            return _unitOfWork.Users.Find(p => p.Name == name && p.Password == password).Any();
+        }
+
+        public void UpdateUser(UpdateUserDTO userUpdate)
         {
             User user = _unitOfWork.Users.Get(userUpdate.Id);
 
