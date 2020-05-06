@@ -11,7 +11,7 @@ namespace CloudStorage.BLL.Services
     {
         public void CreateFolder(CreateFolderDTO createFolder)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void DeleteFolder(DeleteFolderDTO deleteFolder)

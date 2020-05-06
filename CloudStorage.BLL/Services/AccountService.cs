@@ -1,21 +1,34 @@
 ﻿using CloudStorage.BLL.Interfaces.Models.Account;
 using CloudStorage.BLL.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CloudStorage.DAL.Interfaces.Interfaces;
+using CloudStorage.DAL.Interfaces.Models;
+using System.Linq;
 
 namespace CloudStorage.BLL.Services
 {
     class AccountService : IAccountService
     {
-        public bool AccountExist(LoginDTO login)
+        public AccountService(IRepository<UserModel> userRepository)
         {
-            throw new NotImplementedException();
+            _userRepository = userRepository;
         }
+
+        private IRepository<UserModel> _userRepository;
 
         public void CreateAccount(CreateAccountDTO createAccount)
         {
-            throw new NotImplementedException();
+            UserModel user = new UserModel()
+            {
+                Name = createAccount.Name,
+                Password = createAccount.Password,
+            };
+
+            _userRepository.Create(user);
+        }
+
+        public bool AccountExist(LoginDTO login)
+        {
+            return _userRepository.Find(p => p.Name == login.Name && p.Password == login.Password).Any();
         }
     }
 }
