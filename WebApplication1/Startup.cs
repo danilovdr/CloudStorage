@@ -25,10 +25,11 @@ namespace WebApplication1
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IAccountService, IAccountService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IFolderService, FolderService>();
             services.AddTransient<IFileService, FileService>();
 
             services.AddTransient<IRepository<UserModel>, UserRepository>();
@@ -41,20 +42,18 @@ namespace WebApplication1
              options.UseSqlite(connectionString));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-             .AddCookie(options => //CookieAuthenticationOptions
+             .AddCookie(options =>
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
             services.AddControllersWithViews();
 
-            // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -64,7 +63,6 @@ namespace WebApplication1
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

@@ -1,13 +1,14 @@
-﻿using CloudStorage.BLL.Interfaces.Models;
-using CloudStorage.DomainModels;
-using System.Collections.Generic;
+﻿using CloudStorage.BLL.Interfaces.Models.File;
+using CloudStorage.BLL.Interfaces.ViewModels.File;
 
 namespace CloudStorage.BLL.Interfaces.Services
 {
     public interface IFileService
     {
-        void CreateFile(CreateFileDTO file);
-        List<File> GetFilesByUsername(string name);
-        void DeleteFile();
+        void CreateFile(CreateFileDTO createFile);
+        void UpdateFile(UpdateFileDTO updateFile);
+        void DeleteFile(DeleteFileDTO deleteFile);
+        bool UserHasAccess(UserHasAccessDTO userHasAccess);
+        FilesByUserViewMode GetFilesByUser(FilesByUserDTO filesByUser);
     }
 }

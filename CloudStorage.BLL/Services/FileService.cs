@@ -1,5 +1,7 @@
 ﻿using CloudStorage.BLL.Interfaces.Models;
+using CloudStorage.BLL.Interfaces.Models.File;
 using CloudStorage.BLL.Interfaces.Services;
+using CloudStorage.BLL.Interfaces.ViewModels.File;
 using CloudStorage.DAL.Interfaces.Interfaces;
 using CloudStorage.DomainModels;
 using System;
@@ -10,34 +12,29 @@ namespace CloudStorage.BLL.Services
 {
     public class FileService : IFileService
     {
-        public FileService(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
-        private IUnitOfWork _unitOfWork;
-
-        public void CreateFile(CreateFileDTO file)
-        {
-            File newFile = new File()
-            {
-                Name = file.Name,
-                Content = file.Content,
-                OwnerName = file.OwnerName
-            };
-
-            _unitOfWork.Files.Create(newFile);
-            _unitOfWork.Save();
-        }
-
-        public void DeleteFile()
+        public void CreateFile(CreateFileDTO createFile)
         {
             throw new NotImplementedException();
         }
 
-        public List<File> GetFilesByUsername(string name)
+        public void DeleteFile(DeleteFileDTO deleteFile)
         {
-            return _unitOfWork.Files.Find(p => p.OwnerName == name).ToList();
+            throw new NotImplementedException();
+        }
+
+        public FilesByUserViewMode GetFilesByUser(FilesByUserDTO filesByUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateFile(UpdateFileDTO updateFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UserHasAccess(UserHasAccessDTO userHasAccess)
+        {
+            throw new NotImplementedException();
         }
     }
 }
