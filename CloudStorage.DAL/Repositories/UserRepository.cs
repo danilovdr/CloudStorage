@@ -1,12 +1,13 @@
-﻿using CloudStorage.DAL.Interfaces.Context;
+﻿using CloudStorage.DAL.Exceptions;
+using CloudStorage.DAL.Interfaces.Context;
 using CloudStorage.DAL.Interfaces.Interfaces;
-using CloudStorage.DomainModels;
+using CloudStorage.DAL.Interfaces.Models;
 using System;
 using System.Linq;
 
 namespace CloudStorage.DAL.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IRepository<UserModel>
     {
         public UserRepository(IApplicationDbContext dbContext)
         {
@@ -15,41 +16,46 @@ namespace CloudStorage.DAL.Repositories
 
         private IApplicationDbContext _dbContext;
 
-        public long Create(User item)
-        {
-            _dbContext.Users.Add(item);
-            //return _dbContext.Users.Last().Id;
-            return -1;
-        }
-
-        public void Delete(long id)
-        {
-            User deletedUser = _dbContext.Users.FirstOrDefault(p => p.Id == id);
-
-            if (deletedUser != null)
-            {
-                _dbContext.Users.Remove(deletedUser);
-            }
-        }
-
-        public IQueryable<User> Find(Func<User, bool> predicate)
-        {
-            return _dbContext.Users.Where(predicate).AsQueryable();
-        }
-
-        public User Get(long id)
-        {
-            return _dbContext.Users.Find(id);
-        }
-
-        public IQueryable<User> GetAll()
+        public IQueryable<UserModel> GetAll()
         {
             return _dbContext.Users;
         }
 
-        public void Update(User item)
+        public UserModel Get(Guid id)
+        {
+            return _dbContext.Users.Find(id);
+        }
+
+        public IQueryable<UserModel> Find(Func<UserModel, bool> predicate)
+        {
+            return _dbContext.Users.Where(predicate).AsQueryable();
+        }
+
+        public void Create(UserModel item)
+        {
+            _dbContext.Users.Add(item);
+        }
+
+        public void Update(UserModel item)
         {
             _dbContext.Users.Update(item);
+        }
+
+        public void Delete(Guid id)
+        {
+            UserModel user = _dbContext.Users.Find(id);
+
+            if (user == null)
+            {
+                throw new UserNotFoundException("Удаляемый пользователь не найден");
+            }
+
+            _dbContext.Users.Remove(user);
+        }
+
+        public void Save()
+        {
+            _dbContext.Save();
         }
     }
 }

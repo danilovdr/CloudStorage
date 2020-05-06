@@ -3,8 +3,8 @@ using CloudStorage.BLL.Services;
 using CloudStorage.DAL.Context;
 using CloudStorage.DAL.Interfaces.Context;
 using CloudStorage.DAL.Interfaces.Interfaces;
+using CloudStorage.DAL.Interfaces.Models;
 using CloudStorage.DAL.Repositories;
-using CloudStorage.DomainModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,9 +31,10 @@ namespace WebApplication1
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFileService, FileService>();
 
-            services.AddTransient<IRepository<User>, UserRepository>();
-            services.AddTransient<IRepository<File>, FileRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IRepository<UserModel>, UserRepository>();
+            services.AddTransient<IRepository<FolderModel>, FolderRepository>();
+            services.AddTransient<IRepository<UserFolderModel>, UserFolderRepository>();
+            services.AddTransient<IRepository<FileModel>, FileRepository>();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>

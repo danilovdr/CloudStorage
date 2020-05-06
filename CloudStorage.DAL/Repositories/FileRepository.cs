@@ -1,12 +1,13 @@
-﻿using CloudStorage.DAL.Interfaces.Context;
+﻿using CloudStorage.DAL.Exceptions;
+using CloudStorage.DAL.Interfaces.Context;
 using CloudStorage.DAL.Interfaces.Interfaces;
-using CloudStorage.DomainModels;
+using CloudStorage.DAL.Interfaces.Models;
 using System;
 using System.Linq;
 
 namespace CloudStorage.DAL.Repositories
 {
-    public class FileRepository : IRepository<File>
+    public class FileRepository : IRepository<FileModel>
     {
         public FileRepository(IApplicationDbContext dbContext)
         {
@@ -15,41 +16,46 @@ namespace CloudStorage.DAL.Repositories
 
         private IApplicationDbContext _dbContext;
 
-        public long Create(File item)
-        {
-            _dbContext.Files.Add(item);
-            //return _dbContext.Files.Last().Id;
-            return 0;
-        }
-
-        public void Delete(long id)
-        {
-            File deletedFile = _dbContext.Files.Find(id);
-
-            if (deletedFile != null)
-            {
-                _dbContext.Files.Remove(deletedFile);
-            }
-        }
-
-        public IQueryable<File> Find(Func<File, bool> predicate)
-        {
-            return _dbContext.Files.Where(predicate).AsQueryable();
-        }
-
-        public File Get(long id)
-        {
-            return _dbContext.Files.Find(id);
-        }
-
-        public IQueryable<File> GetAll()
+        public IQueryable<FileModel> GetAll()
         {
             return _dbContext.Files;
         }
 
-        public void Update(File item)
+        public FileModel Get(Guid id)
+        {
+            return _dbContext.Files.Find(id);
+        }
+
+        public IQueryable<FileModel> Find(Func<FileModel, bool> predicate)
+        {
+            return _dbContext.Files.Where(predicate).AsQueryable();
+        }
+
+        public void Create(FileModel item)
+        {
+            _dbContext.Files.Add(item);
+        }
+
+        public void Update(FileModel item)
         {
             _dbContext.Files.Update(item);
+        }
+
+        public void Delete(Guid id)
+        {
+            FileModel file = _dbContext.Files.Find(id);
+
+            if (file == null)
+            {
+                throw new FileNotFoundException("Удаляемый файл не найден");
+            }
+
+            _dbContext.Files.Remove(file);
+        }
+
+        public void Save()
+        {
+            _dbContext.Save();
         }
     }
 }
