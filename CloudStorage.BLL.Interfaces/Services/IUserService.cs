@@ -5,6 +5,7 @@ namespace CloudStorage.BLL.Interfaces.Services
 {
     public interface IUserService
     {
-
+        void CreateUser(CreateUserDTO user);
+        User GetUser(UserDTO user);
     }
 }

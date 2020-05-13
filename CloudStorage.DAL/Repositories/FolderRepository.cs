@@ -52,10 +52,5 @@ namespace CloudStorage.DAL.Repositories
         {
             _dbContext.Folders.Update(item);
         }
-
-        public void Save()
-        {
-            _dbContext.Save();
-        }
     }
 }

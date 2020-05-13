@@ -1,11 +1,14 @@
-﻿using System;
+﻿using CloudStorage.DomainModels;
+using System;
 using System.Collections.Generic;
 
 namespace CloudStorage.DAL.Interfaces.Models
 {
-    public class FileModel
+    public class FileModel : File
     {
-        public Guid FolderId { get; set; }
-        public List<UserFolderFileModel> UserFolderFile { get; set; }
+        public Guid ParentFolderId { get; set; }
+        public FolderModel ParentFolder { get; ; set; }
+
+        public List<UserFileModel> UserFile { get; set; }
     }
 }

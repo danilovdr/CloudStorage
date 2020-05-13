@@ -36,6 +36,7 @@ namespace WebApplication1
             services.AddTransient<IRepository<FolderModel>, FolderRepository>();
             services.AddTransient<IRepository<UserFolderModel>, UserFolderRepository>();
             services.AddTransient<IRepository<FileModel>, FileRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>

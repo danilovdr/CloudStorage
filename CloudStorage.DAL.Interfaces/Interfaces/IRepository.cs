@@ -11,6 +11,5 @@ namespace CloudStorage.DAL.Interfaces.Interfaces
         void Create(T item);
         void Update(T item);
         void Delete(Guid id);
-        void Save();
     }
 }

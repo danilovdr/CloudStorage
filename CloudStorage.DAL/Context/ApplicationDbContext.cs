@@ -1,6 +1,5 @@
 ﻿using CloudStorage.DAL.Interfaces.Context;
 using CloudStorage.DAL.Interfaces.Models;
-using CloudStorage.DomainModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloudStorage.DAL.Context
@@ -10,7 +9,7 @@ namespace CloudStorage.DAL.Context
         public DbSet<UserModel> Users { get; set; }
         public DbSet<FolderModel> Folders { get; set; }
         public DbSet<UserFolderModel> UserFolders { get; set; }
-        public DbSet<UserFolderFileModel> UserFolderFile { get; set; }
+        public DbSet<UserFileModel> UserFolderFile { get; set; }
         public DbSet<FileModel> Files { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -21,23 +20,15 @@ namespace CloudStorage.DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserFolderFileModel>()
-                .ToTable("UserFolderFile")
-                .HasKey(p => new { p.UserId, p.FolderId, p.FileId });
 
-            modelBuilder.Entity<UserFolderFileModel>()
+            modelBuilder.Entity<UserFileModel>()
                 .HasOne(p => p.User)
-                .WithMany(p => p.UserFolderFile)
+                .WithMany(p => p.UserFile)
                 .HasForeignKey(p => p.UserId);
 
-            modelBuilder.Entity<UserFolderFileModel>()
-                .HasOne(p => p.Folder)
-                .WithMany(p => p.UserFolderFile)
-                .HasForeignKey(p => p.FolderId);
-
-            modelBuilder.Entity<UserFolderFileModel>()
+            modelBuilder.Entity<UserFileModel>()
                 .HasOne(p => p.File)
-                .WithMany(p => p.UserFolderFile)
+                .WithMany(p => p.UserFile)
                 .HasForeignKey(p => p.FileId);
 
             modelBuilder.Entity<UserFolderModel>()
@@ -62,7 +53,17 @@ namespace CloudStorage.DAL.Context
                 .ToTable("Folder")
                 .HasKey(p => p.Id);
 
-            modelBuilder.Entity<File>()
+            modelBuilder.Entity<FolderModel>()
+                .HasMany(p => p.Folders)
+                .WithOne(p => p.ParentFolder)
+                .HasForeignKey(p => p.ParentFolderId);
+
+            modelBuilder.Entity<FolderModel>()
+                .HasMany(p => p.Files)
+                .WithOne(p => p.ParentFolder)
+                .HasForeignKey(p => p.ParentFolderId);
+
+            modelBuilder.Entity<FileModel>()
                 .ToTable("File")
                 .HasKey(p => p.Id);
         }

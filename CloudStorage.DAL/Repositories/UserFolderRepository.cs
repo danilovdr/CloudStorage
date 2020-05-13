@@ -51,10 +51,5 @@ namespace CloudStorage.DAL.Repositories
                 throw new UserFolderNotFoundException("Удалямая запись о пользователе-папке не найдена");
             }
         }
-
-        public void Save()
-        {
-            _dbContext.Save();
-        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CloudStorage.BLL.Interfaces.Models.Account
+namespace CloudStorage.BLL.Interfaces.Models
 {
-    public class CreateAccountDTO
+    public class CreateUserDTO
     {
         [Required(ErrorMessage = "Не указано имя пользователя")]
         public string Name { get; set; }

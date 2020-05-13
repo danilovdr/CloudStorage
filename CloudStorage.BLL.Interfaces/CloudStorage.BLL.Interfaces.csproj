@@ -12,10 +12,4 @@
     <ProjectReference Include="..\CloudStorage.DomainModels\CloudStorage.DomainModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\User\" />
-    <Folder Include="ViewModels\Account\" />
-    <Folder Include="ViewModels\User\" />
-  </ItemGroup>
-
 </Project>

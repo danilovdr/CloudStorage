@@ -4,6 +4,8 @@ namespace CloudStorage.DAL.Interfaces.Models
 {
     public class UserFolderModel
     {
+        public Guid Id { get; set; }
+
         public Guid UserId { get; set; }
         public UserModel User { get; set; }
 
@@ -12,6 +14,17 @@ namespace CloudStorage.DAL.Interfaces.Models
 
         //Rights
         public bool CanAccess { get; set; }
-        public bool CanChange { get; set; }
+        private bool _canChange;
+        public bool CanChange
+        {
+            get
+            {
+                return _canChange & CanAccess;
+            }
+            set
+            {
+                _canChange = value;
+            }
+        }
     }
 }

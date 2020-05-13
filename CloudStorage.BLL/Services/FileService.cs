@@ -1,40 +1,39 @@
 ﻿using CloudStorage.BLL.Interfaces.Models;
-using CloudStorage.BLL.Interfaces.Models.File;
 using CloudStorage.BLL.Interfaces.Services;
-using CloudStorage.BLL.Interfaces.ViewModels.File;
 using CloudStorage.DAL.Interfaces.Interfaces;
 using CloudStorage.DomainModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CloudStorage.BLL.Services
 {
     public class FileService : IFileService
     {
-        public void CreateFile(CreateFileDTO createFile)
+        public FileService(IUnitOfWork unitOfWork, IUserService userService)
         {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
+            _userService = userService;
         }
 
-        public void DeleteFile(DeleteFileDTO deleteFile)
+        private IUnitOfWork _unitOfWork;
+        private IUserService _userService;
+
+        public void CreateFile(FileDTO file)
         {
-            throw new NotImplementedException();
+            User user = _userService.GetUser(file.User);
         }
 
-        public FilesByUserViewMode GetFilesByUser(FilesByUserDTO filesByUser)
+        public void UpdateFile(FileDTO file)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
-        public void UpdateFile(UpdateFileDTO updateFile)
+        public void DeleteFile(FileDTO file)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
-        public bool UserHasAccess(UserHasAccessDTO userHasAccess)
+        public File GetFile(FileDTO file)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }

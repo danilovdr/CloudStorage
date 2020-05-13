@@ -40,7 +40,7 @@ namespace CloudStorage.WEB.Controllers
         }
 
         [HttpPut]
-        public IActionResult Register(CreateAccountDTO userCreated)
+        public IActionResult Register(CreateUserDTO userCreated)
         {
             _userService.Registration(userCreated);
             return Ok();

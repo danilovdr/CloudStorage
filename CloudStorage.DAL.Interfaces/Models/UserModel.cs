@@ -7,6 +7,6 @@ namespace CloudStorage.DAL.Interfaces.Models
     {
         public string Password { get; set; }
         public List<UserFolderModel> UserFolder { get; set; }
-        public List<UserFolderFileModel> UserFolderFile { get; set; }
+        public List<UserFileModel> UserFile { get; set; }
     }
 }

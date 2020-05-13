@@ -52,10 +52,5 @@ namespace CloudStorage.DAL.Repositories
 
             _dbContext.Files.Remove(file);
         }
-
-        public void Save()
-        {
-            _dbContext.Save();
-        }
     }
 }

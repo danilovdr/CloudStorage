@@ -2,9 +2,9 @@
 
 namespace CloudStorage.BLL.Exceptions
 {
-    class UserCreateException : Exception
+    class CreateUserException : Exception
     {
-        public UserCreateException(string message, string value)
+        public CreateUserException(string message, string value)
             : base(message)
         {
             Value = value;
