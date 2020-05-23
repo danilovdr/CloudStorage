@@ -1,10 +1,8 @@
 ﻿using CloudStorage.BLL.Exceptions;
 using CloudStorage.BLL.Interfaces.Models;
-using CloudStorage.BLL.Interfaces.Models.Account;
 using CloudStorage.BLL.Interfaces.Services;
 using CloudStorage.DAL.Interfaces.Interfaces;
 using CloudStorage.DAL.Interfaces.Models;
-using CloudStorage.DomainModels;
 using System.Linq;
 
 namespace CloudStorage.BLL.Services
@@ -18,33 +16,20 @@ namespace CloudStorage.BLL.Services
 
         private IUnitOfWork _unitOfWork;
 
-        public void CreateUser(CreateUserDTO user)
+        public void Registration(RegistrationDTO user)
         {
-            bool hasUser = GetUser(new UserDTO { Name = user.Name }) == null;
-
+            bool hasUser = _unitOfWork.UserRepository.Find(p => p.Name == user.Name).Any();
             if (hasUser)
-            {
                 throw new CreateUserException("Пользователь с таким именем уже существует", user.Name);
-            }
 
             UserModel userModel = new UserModel()
             {
                 Name = user.Name,
-                Password = user.Password,
+                Password = user.Password
             };
 
             _unitOfWork.UserRepository.Create(userModel);
             _unitOfWork.Save();
-        }
-
-        public bool HasUser(LoginDTO login)
-        {
-            return _unitOfWork.UserRepository.Find(p => p.Name == login.Name && p.Password == login.Password).Any();
-        }
-
-        public User GetUser(UserDTO user)
-        {
-            return _unitOfWork.UserRepository.Find(p => p.Name == user.Name).FirstOrDefault();
         }
     }
 }

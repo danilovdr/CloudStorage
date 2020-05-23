@@ -27,20 +27,19 @@ namespace WebApplication1
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IAccountService, IAccountService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFolderService, FolderService>();
             services.AddTransient<IFileService, FileService>();
 
             services.AddTransient<IRepository<UserModel>, UserRepository>();
             services.AddTransient<IRepository<FolderModel>, FolderRepository>();
-            services.AddTransient<IRepository<UserFolderModel>, UserFolderRepository>();
+            services.AddTransient<IRepository<FolderPermissionModel>, FolderPermissionRepository>();
             services.AddTransient<IRepository<FileModel>, FileRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-             options.UseSqlite(connectionString));
+             options.UseMySql(connectionString));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
              .AddCookie(options =>

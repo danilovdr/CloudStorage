@@ -7,36 +7,36 @@ using System.Linq;
 
 namespace CloudStorage.DAL.Repositories
 {
-    public class UserFolderRepository : IRepository<UserFolderModel>
+    public class FolderPermissionRepository : IRepository<FolderPermissionModel>
     {
-        public UserFolderRepository(IApplicationDbContext dbContext)
+        public FolderPermissionRepository(IApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         private IApplicationDbContext _dbContext;
 
-        public IQueryable<UserFolderModel> GetAll()
+        public IQueryable<FolderPermissionModel> GetAll()
         {
             return _dbContext.UserFolders;
         }
 
-        public UserFolderModel Get(Guid id)
+        public FolderPermissionModel Get(Guid id)
         {
             return _dbContext.UserFolders.Find(id);
         }
 
-        public IQueryable<UserFolderModel> Find(Func<UserFolderModel, bool> predicate)
+        public IQueryable<FolderPermissionModel> Find(Func<FolderPermissionModel, bool> predicate)
         {
             return _dbContext.UserFolders.Where(predicate).AsQueryable();
         }
 
-        public void Create(UserFolderModel item)
+        public void Create(FolderPermissionModel item)
         {
             _dbContext.UserFolders.Add(item);
         }
 
-        public void Update(UserFolderModel item)
+        public void Update(FolderPermissionModel item)
         {
             _dbContext.UserFolders.Update(item);
 
@@ -44,7 +44,7 @@ namespace CloudStorage.DAL.Repositories
 
         public void Delete(Guid id)
         {
-            UserFolderModel userFolder = _dbContext.UserFolders.Find(id);
+            FolderPermissionModel userFolder = _dbContext.UserFolders.Find(id);
 
             if (userFolder == null)
             {

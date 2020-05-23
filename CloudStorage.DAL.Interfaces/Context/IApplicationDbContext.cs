@@ -7,8 +7,8 @@ namespace CloudStorage.DAL.Interfaces.Context
     {
         DbSet<UserModel> Users { get; set; }
         DbSet<FolderModel> Folders { get; set; }
-        DbSet<UserFolderModel> UserFolders { get; set; }
-        DbSet<UserFileModel> UserFolderFile { get; set; }
+        DbSet<FolderPermissionModel> UserFolders { get; set; }
+        DbSet<FilePermissionModel> UserFolderFile { get; set; }
         DbSet<FileModel> Files { get; set; }
         void Save();
     }

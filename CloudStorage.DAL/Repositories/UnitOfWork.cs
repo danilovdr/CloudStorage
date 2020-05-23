@@ -8,20 +8,20 @@ namespace CloudStorage.DAL.Repositories
     {
         public IRepository<UserModel> UserRepository { get; }
         public IRepository<FolderModel> FolderRepository { get; }
-        public IRepository<UserFolderModel> UserFolderRepository { get; }
+        public IRepository<FolderPermissionModel> FolderPermissionRepository { get; }
         public IRepository<FileModel> FileRepository { get; }
-        public IRepository<UserFileModel> UserFileRepository { get; }
+        public IRepository<FilePermissionModel> FilePermissionRepository { get; }
 
         public UnitOfWork(IApplicationDbContext dbContext, IRepository<UserModel> userRepository,
-            IRepository<FolderModel> folderRepository, IRepository<UserFolderModel> userFolderRepository,
-            IRepository<FileModel> fileRepository, IRepository<UserFileModel> userFileRepository)
+            IRepository<FolderModel> folderRepository, IRepository<FolderPermissionModel> userFolderRepository,
+            IRepository<FileModel> fileRepository, IRepository<FilePermissionModel> userFileRepository)
         {
             _dbContext = dbContext;
             UserRepository = userRepository;
             FolderRepository = folderRepository;
-            UserFolderRepository = userFolderRepository;
+            FolderPermissionRepository = userFolderRepository;
             FileRepository = fileRepository;
-            UserFileRepository = userFileRepository;
+            FilePermissionRepository = userFileRepository;
         }
 
         private IApplicationDbContext _dbContext;

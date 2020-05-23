@@ -2,17 +2,16 @@
 
 namespace CloudStorage.BLL.Interfaces.Models
 {
-    public class CreateUserDTO
+    public class RegistrationDTO
     {
         [Required(ErrorMessage = "Не указано имя пользователя")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Не указан пароль")]
-        [StringLength(25, MinimumLength = 7, ErrorMessage = "Длина пароля должна быть от 7 до 25 символов")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Не указано подтверждение пароля")]
-        [Compare("Password", ErrorMessage = "Пароли на совпадают")]
+        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -6,9 +6,9 @@ namespace CloudStorage.DAL.Interfaces.Interfaces
     {
         IRepository<UserModel> UserRepository { get; }
         IRepository<FolderModel> FolderRepository { get; }
-        IRepository<UserFolderModel> UserFolderRepository { get; }
+        IRepository<FolderPermissionModel> FolderPermissionRepository { get; }
         IRepository<FileModel> FileRepository { get; }
-        IRepository<UserFileModel> UserFileRepository { get; }
+        IRepository<FilePermissionModel> FilePermissionRepository { get; }
 
         void Save();
 

@@ -8,8 +8,8 @@ namespace CloudStorage.DAL.Context
     {
         public DbSet<UserModel> Users { get; set; }
         public DbSet<FolderModel> Folders { get; set; }
-        public DbSet<UserFolderModel> UserFolders { get; set; }
-        public DbSet<UserFileModel> UserFolderFile { get; set; }
+        public DbSet<FolderPermissionModel> UserFolders { get; set; }
+        public DbSet<FilePermissionModel> UserFolderFile { get; set; }
         public DbSet<FileModel> Files { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -21,26 +21,26 @@ namespace CloudStorage.DAL.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<UserFileModel>()
+            modelBuilder.Entity<FilePermissionModel>()
                 .HasOne(p => p.User)
                 .WithMany(p => p.UserFile)
                 .HasForeignKey(p => p.UserId);
 
-            modelBuilder.Entity<UserFileModel>()
+            modelBuilder.Entity<FilePermissionModel>()
                 .HasOne(p => p.File)
                 .WithMany(p => p.UserFile)
                 .HasForeignKey(p => p.FileId);
 
-            modelBuilder.Entity<UserFolderModel>()
+            modelBuilder.Entity<FolderPermissionModel>()
                 .ToTable("UserFolder")
                 .HasKey(p => new { p.UserId, p.FolderId });
 
-            modelBuilder.Entity<UserFolderModel>()
+            modelBuilder.Entity<FolderPermissionModel>()
                 .HasOne(p => p.User)
                 .WithMany(p => p.UserFolder)
                 .HasForeignKey(p => p.UserId);
 
-            modelBuilder.Entity<UserFolderModel>()
+            modelBuilder.Entity<FolderPermissionModel>()
                 .HasOne(p => p.Folder)
                 .WithMany(p => p.UserFolder)
                 .HasForeignKey(p => p.FolderId);
@@ -55,7 +55,7 @@ namespace CloudStorage.DAL.Context
 
             modelBuilder.Entity<FolderModel>()
                 .HasMany(p => p.Folders)
-                .WithOne(p => p.ParentFolder)
+                .WithOne(p => p.Parent)
                 .HasForeignKey(p => p.ParentFolderId);
 
             modelBuilder.Entity<FolderModel>()

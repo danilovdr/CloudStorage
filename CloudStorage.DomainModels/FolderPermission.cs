@@ -2,10 +2,9 @@
 
 namespace CloudStorage.DomainModels
 {
-    public class File
+    public class FolderPermission
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Content { get; set; }
+        public PermissionType Value { get; set; }
     }
 }
