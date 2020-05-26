@@ -1,4 +1,4 @@
-﻿using CloudStorage.BLL.Interfaces.Models;
+﻿using CloudStorage.BLL.Interfaces.DTO;
 using CloudStorage.BLL.Interfaces.Services;
 using CloudStorage.DAL.Interfaces.Interfaces;
 using CloudStorage.DAL.Interfaces.Models;
@@ -18,7 +18,7 @@ namespace CloudStorage.BLL.Services
         private IUnitOfWork _unitOfWork;
         private IPermissionService _permissionService;
 
-        public void CreateFile(FileDTO file, Guid userId)
+        public FileDTO CreateFile(FileDTO file, Guid userId)
         {
             UserModel creator = _unitOfWork.UserRepository.Get(userId);
             if (creator == null)
@@ -47,15 +47,6 @@ namespace CloudStorage.BLL.Services
                     PermissionType permission = _permissionService.GetFolderPermission((Guid)file.ParentFolderId, userId);
                     if (permission == PermissionType.None)
                         throw new Exception();
-
-                    FilePermissionModel filePermissionModel = new FilePermissionModel()
-                    {
-                        User = creator,
-                        File = fileModel,
-                        Value = PermissionType.Edit
-                    };
-
-                    _unitOfWork.FilePermissionRepository.Create(filePermissionModel);
                 }
 
                 fileModel.Parent = parent;
@@ -64,6 +55,14 @@ namespace CloudStorage.BLL.Services
 
             _unitOfWork.FileRepository.Create(fileModel);
             _unitOfWork.Save();
+            _permissionService.SetFilePermission(fileModel.Id, userId, PermissionType.Edit);
+            return new FileDTO()
+            {
+                Id = fileModel.Id,
+                Name = fileModel.Name,
+                Content = fileModel.Content,
+                ParentFolderId = fileModel.ParentId
+            };
         }
 
         public void UpdateFile(FileDTO file, Guid userId)

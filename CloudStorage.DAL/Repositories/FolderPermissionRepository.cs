@@ -18,33 +18,33 @@ namespace CloudStorage.DAL.Repositories
 
         public IQueryable<FolderPermissionModel> GetAll()
         {
-            return _dbContext.UserFolders;
+            return _dbContext.FolderPermissions;
         }
 
         public FolderPermissionModel Get(Guid id)
         {
-            return _dbContext.UserFolders.Find(id);
+            return _dbContext.FolderPermissions.Find(id);
         }
 
         public IQueryable<FolderPermissionModel> Find(Func<FolderPermissionModel, bool> predicate)
         {
-            return _dbContext.UserFolders.Where(predicate).AsQueryable();
+            return _dbContext.FolderPermissions.Where(predicate).AsQueryable();
         }
 
         public void Create(FolderPermissionModel item)
         {
-            _dbContext.UserFolders.Add(item);
+            _dbContext.FolderPermissions.Add(item);
         }
 
         public void Update(FolderPermissionModel item)
         {
-            _dbContext.UserFolders.Update(item);
+            _dbContext.FolderPermissions.Update(item);
 
         }
 
         public void Delete(Guid id)
         {
-            FolderPermissionModel userFolder = _dbContext.UserFolders.Find(id);
+            FolderPermissionModel userFolder = _dbContext.FolderPermissions.Find(id);
 
             if (userFolder == null)
             {

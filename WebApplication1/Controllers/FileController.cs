@@ -1,9 +1,9 @@
-﻿using CloudStorage.BLL.Interfaces.Models;
+﻿using CloudStorage.BLL.Interfaces.DTO;
 using CloudStorage.BLL.Interfaces.Services;
-using CloudStorage.DomainModels;
+using CloudStorage.WEB.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System;
 
 namespace CloudStorage.WEB.Controllers
 {
@@ -11,29 +11,59 @@ namespace CloudStorage.WEB.Controllers
     [Route("api/[controller]")]
     public class FileController : Controller
     {
-        public FileController(IFileService fileService, IUserService userService)
+        public FileController(IFileService fileService)
         {
             _fileService = fileService;
-            _userService = userService;
         }
 
         private IFileService _fileService;
-        private IUserService _userService;
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetFilesByUser()
+        public IActionResult GetFile(string id)
         {
-            List<File> files = _fileService.GetFilesByUsername(User.Identity.Name);
-            return Json(files);
+            Guid fileId = Guid.Parse(id);
+            Guid userId = Guid.Parse(HttpContext.User.Identity.Name);
+            FileDTO file = _fileService.GetFile(userId, fileId);
+            FileViewModel viewModel = new FileViewModel()
+            {
+                Id = file.Id,
+                Name = file.Name,
+                Content = file.Content,
+                Parent = file.ParentFolderId
+            };
+            return Json(viewModel);
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateFile(CreateFileDTO file)
+        public IActionResult CreateFile(FileViewModel file)
         {
-            file.OwnerName = User.Identity.Name;
-            _fileService.CreateFile(file);
+            Guid userId = Guid.Parse(HttpContext.User.Identity.Name);
+            FileDTO fileDTO = new FileDTO()
+            {
+                Name = file.Name,
+                Content = file.Content,
+                ParentFolderId = file.Parent
+            };
+            fileDTO = _fileService.CreateFile(fileDTO, userId);
+            FileViewModel viewModel = new FileViewModel()
+            {
+                Id = fileDTO.Id,
+                Name = fileDTO.Name,
+                Content = fileDTO.Content,
+                Parent = fileDTO.ParentFolderId
+            };
+            return Json(viewModel);
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public IActionResult DeleteFile(string id)
+        {
+            Guid fileId = Guid.Parse(id);
+            Guid userId = Guid.Parse(HttpContext.User.Identity.Name);
+            _fileService.DeleteFile(fileId, userId);
             return Ok();
         }
     }

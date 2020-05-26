@@ -8,7 +8,7 @@ using System.Text;
 
 namespace CloudStorage.DAL.Repositories
 {
-    class FilePermissionRepository : IRepository<FilePermissionModel>
+    public class FilePermissionRepository : IRepository<FilePermissionModel>
     {
         public FilePermissionRepository(IApplicationDbContext dbContext)
         {

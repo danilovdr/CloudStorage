@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CloudStorage.BLL.Interfaces.Models
+namespace CloudStorage.BLL.Interfaces.DTO
 {
     public class FileDTO
     {

@@ -30,11 +30,13 @@ namespace WebApplication1
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFolderService, FolderService>();
             services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IPermissionService, PermissionService>();
 
             services.AddTransient<IRepository<UserModel>, UserRepository>();
             services.AddTransient<IRepository<FolderModel>, FolderRepository>();
             services.AddTransient<IRepository<FolderPermissionModel>, FolderPermissionRepository>();
             services.AddTransient<IRepository<FileModel>, FileRepository>();
+            services.AddTransient<IRepository<FilePermissionModel>, FilePermissionRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");

@@ -1,4 +1,4 @@
-﻿using CloudStorage.BLL.Interfaces.Models;
+﻿using CloudStorage.BLL.Interfaces.DTO;
 using CloudStorage.BLL.Interfaces.Services;
 using CloudStorage.DAL.Interfaces.Interfaces;
 using CloudStorage.DAL.Interfaces.Models;
@@ -11,17 +11,16 @@ namespace CloudStorage.BLL.Services
 {
     public class FolderService : IFolderService
     {
-        public FolderService(IUnitOfWork unitOfWork, IFileService fileService, IPermissionService permissionService)
+        public FolderService(IUnitOfWork unitOfWork, IFileService fileService)
         {
             _unitOfWork = unitOfWork;
-            _permissionService = permissionService;
+            _fileService = fileService;
         }
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileService _fileService;
-        private readonly IPermissionService _permissionService;
 
-        public void CreateFolder(FolderDTO folder, Guid userId)
+        public FolderDTO CreateFolder(FolderDTO folder, Guid userId)
         {
             UserModel owner = _unitOfWork.UserRepository.Get(userId);
             if (owner == null)
@@ -51,6 +50,12 @@ namespace CloudStorage.BLL.Services
 
             _unitOfWork.FolderRepository.Create(folderModel);
             _unitOfWork.Save();
+            return new FolderDTO()
+            {
+                Id = folderModel.Id,
+                Name = folderModel.Name,
+                ParentFolderId = folderModel.ParentId
+            };
         }
 
         public void DeleteFolder(Guid folderId, Guid userId)
@@ -74,14 +79,36 @@ namespace CloudStorage.BLL.Services
             _unitOfWork.Save();
         }
 
-        public List<FolderDTO> GetFoldersInFolder(Guid folderId, Guid userId)
+        public List<FolderDTO> GetUserFolders(Guid parentFolderId, Guid userId)
+        {
+            List<FolderModel> folderModels = _unitOfWork.FolderRepository
+                .Find(p =>
+                p.Owner.Id == userId &&
+                p.Owner.Id == userId)
+                .ToList();
+            List<FolderDTO> folders = new List<FolderDTO>();
+
+            foreach (FolderModel folder in folderModels)
+            {
+                FolderDTO folderDTO = new FolderDTO()
+                {
+                    Id = folder.Id,
+                    Name = folder.Name,
+                    ParentFolderId = folder.Parent.Id
+                };
+                folders.Add(folderDTO);
+            }
+            return folders;
+        }
+
+        public List<FolderDTO> GetSharedFolders(Guid parentFolderId, Guid userId)
         {
             List<FolderPermissionModel> fpm = _unitOfWork.FolderPermissionRepository
-                .Find(p =>
-                p.Folder.Parent.Id == folderId &&
-                p.User.Id == userId &&
-                p.Value != PermissionType.None)
-                .ToList();
+              .Find(p =>
+              p.Folder.Parent.Id == parentFolderId &&
+              p.User.Id == userId &&
+              p.Value != PermissionType.None)
+              .ToList();
             List<FolderDTO> folders = new List<FolderDTO>();
 
             foreach (FolderPermission folder in fpm)
@@ -98,27 +125,50 @@ namespace CloudStorage.BLL.Services
             return folders;
         }
 
-        public List<FileDTO> GetFilesInFolder(Guid folderId, Guid userId)
+        public List<FileDTO> GetUserFiles(Guid parentFolderId, Guid userId)
         {
-            List<FilePermissionModel> fpm = _unitOfWork.FilePermissionRepository
+            List<FileModel> fileModels = _unitOfWork.FileRepository
                 .Find(p =>
-                p.File.Parent.Id == folderId &&
-                p.User.Id == userId &&
-                p.Value != PermissionType.None)
+                p.Owner.Id == userId &&
+                p.ParentId == parentFolderId)
                 .ToList();
             List<FileDTO> files = new List<FileDTO>();
 
-            foreach (FilePermission file in fpm)
+            foreach (FileModel file in fileModels)
+            {
+                FileDTO fileDTO = new FileDTO()
+                {
+                    Id = file.Id,
+                    Name = file.Name,
+                    Content = file.Content,
+                    ParentFolderId = file.Parent.Id
+                };
+                files.Add(fileDTO);
+            }
+            return files;
+        }
+
+        public List<FileDTO> GetSharedFiles(Guid parentFolderId, Guid userId)
+        {
+            List<FilePermissionModel> fpm = _unitOfWork.FilePermissionRepository
+             .Find(p =>
+             p.File.Parent.Id == parentFolderId &&
+             p.User.Id == userId &&
+             p.Value != PermissionType.None)
+             .ToList();
+            List<FileDTO> files = new List<FileDTO>();
+
+            foreach (FilePermissionModel file in fpm)
             {
                 FileModel fileModel = _unitOfWork.FileRepository.Get(file.Id);
-                FileDTO fileDTO = new FileDTO()
+                FileDTO folderDTO = new FileDTO()
                 {
                     Id = fileModel.Id,
                     Name = fileModel.Name,
                     Content = fileModel.Content,
                     ParentFolderId = fileModel.Parent.Id
                 };
-                files.Add(fileDTO);
+                files.Add(folderDTO);
             }
             return files;
         }
