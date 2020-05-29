@@ -42,33 +42,34 @@ namespace CloudStorage.BLL.Services
             if (folderModel == null)
                 throw new Exception();
 
+            if (folderModel.OwnerId != userId)
+                throw new Exception();
+
             FolderPermissionModel fpm = _unitOfWork.FolderPermissionRepository
-                    .Find(p => p.User.Id == userId && p.Folder.Id == folderId)
+                    .Find(p => p.UserId == userId && p.FolderId == folderId)
                     .FirstOrDefault();
-            if (fpm == null)
+
+            //Create
+            if (permission != PermissionType.None && fpm == null)
             {
-                if (permission != PermissionType.None)
+                fpm = new FolderPermissionModel()
                 {
-                    fpm = new FolderPermissionModel()
-                    {
-                        User = userModel,
-                        Folder = folderModel,
-                        Value = permission
-                    };
-                    _unitOfWork.FolderPermissionRepository.Create(fpm);
-                }
+                    User = userModel,
+                    Folder = folderModel,
+                    Value = permission
+                };
+                _unitOfWork.FolderPermissionRepository.Create(fpm);
             }
-            else
+            //Update
+            else if (permission != PermissionType.None && fpm != null)
             {
-                if (permission == PermissionType.None)
-                {
-                    _unitOfWork.FolderPermissionRepository.Delete(fpm.Id);
-                }
-                else
-                {
-                    fpm.Value = permission;
-                    _unitOfWork.FolderPermissionRepository.Update(fpm);
-                }
+                fpm.Value = permission;
+                _unitOfWork.FolderPermissionRepository.Update(fpm);
+            }
+            //Delete
+            else if (permission == PermissionType.None && fpm != null)
+            {
+                _unitOfWork.FolderPermissionRepository.Delete(fpm.Id);
             }
             _unitOfWork.Save();
         }
@@ -83,33 +84,34 @@ namespace CloudStorage.BLL.Services
             if (fileModel == null)
                 throw new Exception();
 
+            if (fileModel.OwnerId != userId)
+                throw new Exception();
+
             FilePermissionModel fpm = _unitOfWork.FilePermissionRepository
-                    .Find(p => p.User.Id == userId && p.File.Id == fileId)
+                    .Find(p => p.UserId == userId && p.FileId == fileId)
                     .FirstOrDefault();
-            if (fpm == null)
+
+            //Create
+            if (permission != PermissionType.None && fpm == null)
             {
-                if (permission != PermissionType.None)
+                fpm = new FilePermissionModel()
                 {
-                    fpm = new FilePermissionModel()
-                    {
-                        User = userModel,
-                        File = fileModel,
-                        Value = permission
-                    };
-                    _unitOfWork.FilePermissionRepository.Create(fpm);
-                }
+                    User = userModel,
+                    File = fileModel,
+                    Value = permission
+                };
+                _unitOfWork.FilePermissionRepository.Create(fpm);
             }
-            else
+            //Update
+            else if (permission != PermissionType.None && fpm != null)
             {
-                if (permission == PermissionType.None)
-                {
-                    _unitOfWork.FilePermissionRepository.Delete(fpm.Id);
-                }
-                else
-                {
-                    fpm.Value = permission;
-                    _unitOfWork.FilePermissionRepository.Update(fpm);
-                }
+                fpm.Value = permission;
+                _unitOfWork.FilePermissionRepository.Update(fpm);
+            }
+            //Delete
+            else if (permission == PermissionType.None && fpm != null)
+            {
+                _unitOfWork.FilePermissionRepository.Delete(fpm.Id);
             }
             _unitOfWork.Save();
         }

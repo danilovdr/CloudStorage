@@ -2,9 +2,7 @@
 using CloudStorage.DAL.Interfaces.Interfaces;
 using CloudStorage.DAL.Interfaces.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CloudStorage.DAL.Repositories
 {
@@ -19,32 +17,35 @@ namespace CloudStorage.DAL.Repositories
 
         public void Create(FilePermissionModel item)
         {
-            throw new NotImplementedException();
+            _dbContext.FilePermissions.Add(item);
         }
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            FilePermissionModel filePermission = _dbContext.FilePermissions.Find(id);
+            if (filePermission == null)
+                throw new Exception();
+            _dbContext.FilePermissions.Remove(filePermission);
         }
 
         public IQueryable<FilePermissionModel> Find(Func<FilePermissionModel, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _dbContext.FilePermissions.Where(predicate).AsQueryable();
         }
 
         public FilePermissionModel Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _dbContext.FilePermissions.Find(id);
         }
 
         public IQueryable<FilePermissionModel> GetAll()
         {
-            throw new NotImplementedException();
+            return _dbContext.FilePermissions;
         }
 
         public void Update(FilePermissionModel item)
         {
-            throw new NotImplementedException();
+            _dbContext.FilePermissions.Update(item);
         }
     }
 }

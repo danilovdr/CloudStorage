@@ -44,12 +44,8 @@ namespace CloudStorage.DAL.Repositories
         public void Delete(Guid id)
         {
             FileModel file = _dbContext.Files.Find(id);
-
             if (file == null)
-            {
                 throw new FileNotFoundException("Удаляемый файл не найден");
-            }
-
             _dbContext.Files.Remove(file);
         }
     }

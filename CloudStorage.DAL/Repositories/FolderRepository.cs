@@ -24,12 +24,8 @@ namespace CloudStorage.DAL.Repositories
         public void Delete(Guid id)
         {
             FolderModel folder = _dbContext.Folders.Find(id);
-
             if (folder == null)
-            {
                 throw new FolderNotFoundException("Удаляемая папка не найдена");
-            }
-
             _dbContext.Folders.Remove(folder);
         }
 

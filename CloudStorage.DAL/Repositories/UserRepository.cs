@@ -44,12 +44,8 @@ namespace CloudStorage.DAL.Repositories
         public void Delete(Guid id)
         {
             UserModel user = _dbContext.Users.Find(id);
-
             if (user == null)
-            {
                 throw new UserNotFoundException("Удаляемый пользователь не найден");
-            }
-
             _dbContext.Users.Remove(user);
         }
     }

@@ -45,15 +45,15 @@ namespace CloudStorage.BLL.Services
             _unitOfWork.Save();
         }
 
-        public Guid GetUserId(string name, string password)
+        public string GetUserId(string name, string password)
         {
             UserModel userModel = _unitOfWork.UserRepository
                 .Find(p => p.Name == name && p.Password == password)
                 .FirstOrDefault();
             if (userModel == null)
-                throw new Exception();
+                return null;
 
-            return userModel.Id;
+            return userModel.Id.ToString();
         }
 
         public string GetUserName(Guid id)
@@ -63,6 +63,12 @@ namespace CloudStorage.BLL.Services
                 throw new Exception();
 
             return user.Name;
+        }
+
+        public UserDTO GetUser(string name, string password)
+        {
+            UserModel model = _unitOfWork.UserRepository.Find(p => p.Name == name && p.Password == password).FirstOrDefault();
+            return model == null ? null : new UserDTO { Id = model.Id, Name = model.Name };
         }
     }
 }

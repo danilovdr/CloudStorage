@@ -44,11 +44,16 @@ namespace WebApplication1
              options.UseMySql(connectionString));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-             .AddCookie(options =>
-                {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                });
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+            services.AddAuthorization();
+
             services.AddControllersWithViews();
+
+            services.AddCors(options => options.AddPolicy("AllowLocalhost3000", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod())
+            );
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -67,6 +72,8 @@ namespace WebApplication1
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.UseCors("AllowLocalhost3000");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

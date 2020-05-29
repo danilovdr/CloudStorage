@@ -95,10 +95,10 @@ namespace CloudStorage.WEB.Controllers
             {
                 FileViewModel viewModel = new FileViewModel()
                 {
-                    Id = fileDTO.Id,
+                    //Id = fileDTO.Id,
                     Name = fileDTO.Name,
                     Content = fileDTO.Content,
-                    Parent = fileDTO.ParentFolderId
+                    //Parent = fileDTO.ParentFolderId
                 };
                 folderViewModels.Add(viewModel);
             }
@@ -117,10 +117,10 @@ namespace CloudStorage.WEB.Controllers
             {
                 FileViewModel viewModel = new FileViewModel()
                 {
-                    Id = fileDTO.Id,
+                    //Id = fileDTO.Id,
                     Name = fileDTO.Name,
                     Content = fileDTO.Content,
-                    Parent = fileDTO.ParentFolderId
+                    //Parent = fileDTO.ParentFolderId
                 };
                 folderViewModels.Add(viewModel);
             }

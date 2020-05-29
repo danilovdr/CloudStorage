@@ -20,6 +20,9 @@ namespace CloudStorage.BLL.Services
 
         public FileDTO CreateFile(FileDTO file, Guid userId)
         {
+            if (file.Name == null)
+                throw new Exception();
+
             UserModel creator = _unitOfWork.UserRepository.Get(userId);
             if (creator == null)
                 throw new Exception();
@@ -33,8 +36,9 @@ namespace CloudStorage.BLL.Services
 
             if (file.ParentFolderId == null)
             {
-                fileModel.Owner = creator;
+                fileModel.ParentId = null;
                 fileModel.Parent = null;
+                fileModel.Owner = creator;
             }
             else
             {
@@ -42,13 +46,14 @@ namespace CloudStorage.BLL.Services
                 if (parent == null)
                     throw new Exception();
 
-                if (parent.Owner.Id != userId)
+                if (parent.OwnerId != userId)
                 {
                     PermissionType permission = _permissionService.GetFolderPermission((Guid)file.ParentFolderId, userId);
                     if (permission == PermissionType.None)
                         throw new Exception();
                 }
 
+                fileModel.ParentId = parent.Id;
                 fileModel.Parent = parent;
                 fileModel.Owner = parent.Owner;
             }
@@ -71,7 +76,7 @@ namespace CloudStorage.BLL.Services
             if (fileModel == null)
                 throw new Exception();
 
-            if (fileModel.Owner.Id != userId)
+            if (fileModel.OwnerId != userId)
             {
                 PermissionType permission = _permissionService.GetFilePermission(file.Id, userId);
                 if (permission != PermissionType.Edit)
@@ -90,7 +95,7 @@ namespace CloudStorage.BLL.Services
             if (fileModel == null)
                 throw new Exception();
 
-            if (fileModel.Owner.Id != userId)
+            if (fileModel.OwnerId != userId)
             {
                 PermissionType permission = _permissionService.GetFilePermission(fileId, userId);
                 if (permission != PermissionType.Edit)
@@ -107,7 +112,7 @@ namespace CloudStorage.BLL.Services
             if (fileModel == null)
                 throw new Exception();
 
-            if (fileModel.Owner.Id != userId)
+            if (fileModel.OwnerId != userId)
             {
                 PermissionType permission = _permissionService.GetFilePermission(fileId, userId);
                 if (permission == PermissionType.None)

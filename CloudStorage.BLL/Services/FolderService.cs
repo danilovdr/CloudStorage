@@ -34,6 +34,7 @@ namespace CloudStorage.BLL.Services
 
             if (folder.ParentFolderId == null)
             {
+                folderModel.ParentId = null;
                 folderModel.Parent = null;
             }
             else
@@ -42,9 +43,10 @@ namespace CloudStorage.BLL.Services
                 if (parent == null)
                     throw new Exception();
 
-                if (parent.Owner.Id != userId)
+                if (parent.OwnerId != userId)
                     throw new Exception();
 
+                folderModel.ParentId = parent.Id;
                 folderModel.Parent = parent;
             }
 
@@ -64,14 +66,14 @@ namespace CloudStorage.BLL.Services
             if (folderModel == null)
                 throw new Exception();
 
-            if (folderModel.Owner.Id != userId)
+            if (folderModel.OwnerId != userId)
                 throw new Exception();
 
-            List<FileModel> files = _unitOfWork.FileRepository.Find(p => p.Parent.Id == folderId).ToList();
+            List<FileModel> files = _unitOfWork.FileRepository.Find(p => p.ParentId == folderId).ToList();
             foreach (FileModel file in files)
                 _fileService.DeleteFile(file.Id, userId);
 
-            List<FolderModel> folders = _unitOfWork.FolderRepository.Find(p => p.Parent.Id == folderId).ToList();
+            List<FolderModel> folders = _unitOfWork.FolderRepository.Find(p => p.ParentId == folderId).ToList();
             foreach (FolderModel folder in folders)
                 DeleteFolder(folder.Id, userId);
 
@@ -83,8 +85,8 @@ namespace CloudStorage.BLL.Services
         {
             List<FolderModel> folderModels = _unitOfWork.FolderRepository
                 .Find(p =>
-                p.Owner.Id == userId &&
-                p.Owner.Id == userId)
+                p.OwnerId == userId &&
+                p.ParentId == parentFolderId)
                 .ToList();
             List<FolderDTO> folders = new List<FolderDTO>();
 
@@ -129,7 +131,7 @@ namespace CloudStorage.BLL.Services
         {
             List<FileModel> fileModels = _unitOfWork.FileRepository
                 .Find(p =>
-                p.Owner.Id == userId &&
+                p.OwnerId == userId &&
                 p.ParentId == parentFolderId)
                 .ToList();
             List<FileDTO> files = new List<FileDTO>();
@@ -141,7 +143,7 @@ namespace CloudStorage.BLL.Services
                     Id = file.Id,
                     Name = file.Name,
                     Content = file.Content,
-                    ParentFolderId = file.Parent.Id
+                    ParentFolderId = file.ParentId
                 };
                 files.Add(fileDTO);
             }
@@ -152,8 +154,8 @@ namespace CloudStorage.BLL.Services
         {
             List<FilePermissionModel> fpm = _unitOfWork.FilePermissionRepository
              .Find(p =>
-             p.File.Parent.Id == parentFolderId &&
-             p.User.Id == userId &&
+             p.File.ParentId == parentFolderId &&
+             p.UserId == userId &&
              p.Value != PermissionType.None)
              .ToList();
             List<FileDTO> files = new List<FileDTO>();
@@ -166,7 +168,7 @@ namespace CloudStorage.BLL.Services
                     Id = fileModel.Id,
                     Name = fileModel.Name,
                     Content = fileModel.Content,
-                    ParentFolderId = fileModel.Parent.Id
+                    ParentFolderId = fileModel.ParentId
                 };
                 files.Add(folderDTO);
             }

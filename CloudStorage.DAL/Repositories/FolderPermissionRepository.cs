@@ -44,12 +44,10 @@ namespace CloudStorage.DAL.Repositories
 
         public void Delete(Guid id)
         {
-            FolderPermissionModel userFolder = _dbContext.FolderPermissions.Find(id);
-
-            if (userFolder == null)
-            {
+            FolderPermissionModel folderPermission = _dbContext.FolderPermissions.Find(id);
+            if (folderPermission == null)
                 throw new UserFolderNotFoundException("Удалямая запись о пользователе-папке не найдена");
-            }
+            _dbContext.FolderPermissions.Remove(folderPermission);
         }
     }
 }

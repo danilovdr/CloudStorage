@@ -20,6 +20,32 @@ namespace CloudStorage.DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //User
+            modelBuilder.Entity<UserModel>()
+                .ToTable("User")
+                .HasKey(p => p.Id);
+
+            //File
+            modelBuilder.Entity<FileModel>()
+                .ToTable("File")
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<FileModel>()
+                .HasOne(p => p.Owner)
+                .WithMany(p => p.FileOwner)
+                .HasForeignKey(p => p.OwnerId);
+
+            modelBuilder.Entity<FileModel>()
+                .HasOne(p => p.Creator)
+                .WithMany(p => p.FileCreator)
+                .HasForeignKey(p => p.CreatorId);
+
+            modelBuilder.Entity<FileModel>()
+                .HasOne(p => p.Parent)
+                .WithMany(p => p.Files)
+                .HasForeignKey(p => p.ParentId);
+
+            //FilePermission
             modelBuilder.Entity<FilePermissionModel>()
                 .ToTable("FilePermission")
                 .HasKey(p => new { p.UserId, p.FileId });
@@ -34,6 +60,22 @@ namespace CloudStorage.DAL.Context
                 .WithMany(p => p.FilePermissions)
                 .HasForeignKey(p => p.FileId);
 
+            //Folder
+            modelBuilder.Entity<FolderModel>()
+              .ToTable("Folder")
+              .HasKey(p => p.Id);
+
+            modelBuilder.Entity<FolderModel>()
+                .HasOne(p => p.Owner)
+                .WithMany(p => p.FolderOwner)
+                .HasForeignKey(p => p.OwnerId);
+
+            modelBuilder.Entity<FolderModel>()
+                .HasOne(p => p.Parent)
+                .WithMany(p => p.Folders)
+                .HasForeignKey(p => p.ParentId);
+
+            //FolderPermission
             modelBuilder.Entity<FolderPermissionModel>()
                 .ToTable("FolderPermission")
                 .HasKey(p => new { p.UserId, p.FolderId });
@@ -47,28 +89,6 @@ namespace CloudStorage.DAL.Context
                 .HasOne(p => p.Folder)
                 .WithMany(p => p.FolderPermissions)
                 .HasForeignKey(p => p.FolderId);
-
-            modelBuilder.Entity<UserModel>()
-                .ToTable("User")
-                .HasKey(p => p.Id);
-
-            modelBuilder.Entity<FolderModel>()
-                .ToTable("Folder")
-                .HasKey(p => p.Id);
-
-            modelBuilder.Entity<FolderModel>()
-                .HasMany(p => p.Folders)
-                .WithOne(p => p.Parent)
-                .HasForeignKey(p => p.ParentId);
-
-            modelBuilder.Entity<FolderModel>()
-                .HasMany(p => p.Files)
-                .WithOne(p => p.Parent)
-                .HasForeignKey(p => p.ParentId);
-
-            modelBuilder.Entity<FileModel>()
-                .ToTable("File")
-                .HasKey(p => p.Id);
         }
 
         public void Save()

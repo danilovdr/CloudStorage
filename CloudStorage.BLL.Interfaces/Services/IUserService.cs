@@ -6,8 +6,7 @@ namespace CloudStorage.BLL.Interfaces.Services
     public interface IUserService
     {
         Guid Registration(UserDTO user);
-        Guid GetUserId(string name, string password);
-        string GetUserName(Guid id);
+        string GetUserId(string name, string password);
         void ChangePassword(UserDTO user);
     }
 }
