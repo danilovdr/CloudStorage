@@ -32,14 +32,17 @@ namespace CloudStorage.BLL.Services
             return fpm == null ? PermissionType.None : fpm.Value;
         }
 
-        public void SetFolderPermission(Guid folderId, Guid userId, PermissionType permission)
+        public void SetFolderPermission(Guid folderId, Guid ownerId, Guid userId, PermissionType permission)
         {
-            UserModel userModel = _unitOfWork.UserRepository.Get(userId);
-            if (userModel == null)
-                throw new Exception();
-
             FolderModel folderModel = _unitOfWork.FolderRepository.Get(folderId);
             if (folderModel == null)
+                throw new Exception();
+
+            if (folderModel.OwnerId != ownerId)
+                throw new Exception();
+
+            UserModel userModel = _unitOfWork.UserRepository.Get(userId);
+            if (userModel == null)
                 throw new Exception();
 
             if (folderModel.OwnerId != userId)
@@ -74,14 +77,17 @@ namespace CloudStorage.BLL.Services
             _unitOfWork.Save();
         }
 
-        public void SetFilePermission(Guid fileId, Guid userId, PermissionType permission)
+        public void SetFilePermission(Guid fileId, Guid ownerId, Guid userId, PermissionType permission)
         {
-            UserModel userModel = _unitOfWork.UserRepository.Get(userId);
-            if (userModel == null)
-                throw new Exception();
-
             FileModel fileModel = _unitOfWork.FileRepository.Get(fileId);
             if (fileModel == null)
+                throw new Exception();
+
+            if (fileModel.OwnerId != ownerId)
+                throw new Exception();
+
+            UserModel userModel = _unitOfWork.UserRepository.Get(userId);
+            if (userModel == null)
                 throw new Exception();
 
             if (fileModel.OwnerId != userId)

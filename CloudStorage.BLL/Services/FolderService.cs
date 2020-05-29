@@ -83,12 +83,12 @@ namespace CloudStorage.BLL.Services
 
         public List<FolderDTO> GetUserFolders(Guid parentFolderId, Guid userId)
         {
+            List<FolderDTO> folders = new List<FolderDTO>();
             List<FolderModel> folderModels = _unitOfWork.FolderRepository
                 .Find(p =>
                 p.OwnerId == userId &&
                 p.ParentId == parentFolderId)
                 .ToList();
-            List<FolderDTO> folders = new List<FolderDTO>();
 
             foreach (FolderModel folder in folderModels)
             {
@@ -105,13 +105,13 @@ namespace CloudStorage.BLL.Services
 
         public List<FolderDTO> GetSharedFolders(Guid parentFolderId, Guid userId)
         {
+            List<FolderDTO> folders = new List<FolderDTO>();
             List<FolderPermissionModel> fpm = _unitOfWork.FolderPermissionRepository
               .Find(p =>
               p.Folder.Parent.Id == parentFolderId &&
               p.User.Id == userId &&
               p.Value != PermissionType.None)
               .ToList();
-            List<FolderDTO> folders = new List<FolderDTO>();
 
             foreach (FolderPermission folder in fpm)
             {
@@ -129,12 +129,12 @@ namespace CloudStorage.BLL.Services
 
         public List<FileDTO> GetUserFiles(Guid parentFolderId, Guid userId)
         {
+            List<FileDTO> files = new List<FileDTO>();
             List<FileModel> fileModels = _unitOfWork.FileRepository
                 .Find(p =>
                 p.OwnerId == userId &&
                 p.ParentId == parentFolderId)
                 .ToList();
-            List<FileDTO> files = new List<FileDTO>();
 
             foreach (FileModel file in fileModels)
             {
@@ -152,13 +152,13 @@ namespace CloudStorage.BLL.Services
 
         public List<FileDTO> GetSharedFiles(Guid parentFolderId, Guid userId)
         {
+            List<FileDTO> files = new List<FileDTO>();
             List<FilePermissionModel> fpm = _unitOfWork.FilePermissionRepository
              .Find(p =>
              p.File.ParentId == parentFolderId &&
              p.UserId == userId &&
              p.Value != PermissionType.None)
              .ToList();
-            List<FileDTO> files = new List<FileDTO>();
 
             foreach (FilePermissionModel file in fpm)
             {

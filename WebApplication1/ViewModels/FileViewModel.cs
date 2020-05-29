@@ -7,6 +7,6 @@ namespace CloudStorage.WEB.ViewModels
         public Guid? Id { get; set; }
         public string Name { get; set; }
         public string Content { get; set; }
-        public Guid? Parent { get; set; }
+        public Guid? ParentFolderId { get; set; }
     }
 }

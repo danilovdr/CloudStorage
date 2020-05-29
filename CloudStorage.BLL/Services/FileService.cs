@@ -60,7 +60,7 @@ namespace CloudStorage.BLL.Services
 
             _unitOfWork.FileRepository.Create(fileModel);
             _unitOfWork.Save();
-            _permissionService.SetFilePermission(fileModel.Id, userId, PermissionType.Edit);
+            _permissionService.SetFilePermission(fileModel.Id, userId, userId, PermissionType.Edit);
             return new FileDTO()
             {
                 Id = fileModel.Id,

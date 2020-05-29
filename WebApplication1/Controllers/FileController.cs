@@ -5,7 +5,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
 
 namespace CloudStorage.WEB.Controllers
 {
@@ -21,41 +20,40 @@ namespace CloudStorage.WEB.Controllers
         private IFileService _fileService;
 
         [Authorize]
-        [HttpGet]
-        public IActionResult GetFile(string id)
-        {
-            Guid fileId = Guid.Parse(id);
-            Guid userId = Guid.Parse(HttpContext.User.Identity.Name);
-            FileDTO file = _fileService.GetFile(userId, fileId);
-            FileViewModel viewModel = new FileViewModel()
-            {
-                //Id = file.Id,
-                Name = file.Name,
-                Content = file.Content,
-                //Parent = file.ParentFolderId
-            };
-            return Json(viewModel);
-        }
-
-        [Authorize]
-        [HttpPost("create")]
+        [HttpPut]
         public IActionResult CreateFile(FileViewModel file)
         {
-            var claimIdentity = HttpContext.User.Identity as ClaimsIdentity;
-            Guid userId = Guid.Parse(claimIdentity.GetUserId());
+            Guid userId = Guid.Parse(HttpContext.User.Identity.GetUserId());
             FileDTO fileDTO = new FileDTO()
             {
                 Name = file.Name,
                 Content = file.Content,
-                //ParentFolderId = file.Parent
+                ParentFolderId = file.ParentFolderId
             };
             fileDTO = _fileService.CreateFile(fileDTO, userId);
-            FileViewModel viewModel = new FileViewModel()
+            file = new FileViewModel()
             {
-                //Id = fileDTO.Id,
+                Id = fileDTO.Id,
                 Name = fileDTO.Name,
                 Content = fileDTO.Content,
-                //Parent = fileDTO.ParentFolderId
+                ParentFolderId = fileDTO.ParentFolderId
+            };
+            return Json(file);
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetFile(string id)
+        {
+            Guid fileId = Guid.Parse(id);
+            Guid userId = Guid.Parse(HttpContext.User.Identity.GetUserId());
+            FileDTO file = _fileService.GetFile(userId, fileId);
+            FileViewModel viewModel = new FileViewModel()
+            {
+                Id = file.Id,
+                Name = file.Name,
+                Content = file.Content,
+                ParentFolderId = file.ParentFolderId
             };
             return Json(viewModel);
         }
@@ -65,7 +63,7 @@ namespace CloudStorage.WEB.Controllers
         public IActionResult DeleteFile(string id)
         {
             Guid fileId = Guid.Parse(id);
-            Guid userId = Guid.Parse(HttpContext.User.Identity.Name);
+            Guid userId = Guid.Parse(HttpContext.User.Identity.GetUserId());
             _fileService.DeleteFile(fileId, userId);
             return Ok();
         }
