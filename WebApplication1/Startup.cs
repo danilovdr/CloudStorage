@@ -91,7 +91,7 @@ namespace WebApplication1
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = @"..\CloudStorage.WebClient\ClientApp\";
+                spa.Options.SourcePath = @"ClientApp\";
 
                 if (env.IsDevelopment())
                 {
