@@ -20,7 +20,7 @@ namespace CloudStorage.WEB.Controllers
         private IFileService _fileService;
 
         [Authorize]
-        [HttpPut]
+        [HttpPost("create")]
         public IActionResult CreateFile(FileViewModel file)
         {
             Guid userId = Guid.Parse(HttpContext.User.Identity.GetUserId());
@@ -31,14 +31,23 @@ namespace CloudStorage.WEB.Controllers
                 ParentFolderId = file.ParentFolderId
             };
             fileDTO = _fileService.CreateFile(fileDTO, userId);
-            file = new FileViewModel()
+            return Json(fileDTO);
+        }
+
+        [Authorize]
+        [HttpPost("update")]
+        public IActionResult UpdateFile(FileViewModel file)
+        {
+            Guid userId = Guid.Parse(HttpContext.User.Identity.GetUserId());
+            FileDTO fileDTO = new FileDTO()
             {
-                Id = fileDTO.Id,
-                Name = fileDTO.Name,
-                Content = fileDTO.Content,
-                ParentFolderId = fileDTO.ParentFolderId
+                Id = (Guid)file.Id,
+                Name = file.Name,
+                Content = file.Content,
+                ParentFolderId = file.ParentFolderId
             };
-            return Json(file);
+            fileDTO = _fileService.UpdateFile(fileDTO, userId);
+            return Json(fileDTO);
         }
 
         [Authorize]
@@ -47,19 +56,12 @@ namespace CloudStorage.WEB.Controllers
         {
             Guid fileId = Guid.Parse(id);
             Guid userId = Guid.Parse(HttpContext.User.Identity.GetUserId());
-            FileDTO file = _fileService.GetFile(userId, fileId);
-            FileViewModel viewModel = new FileViewModel()
-            {
-                Id = file.Id,
-                Name = file.Name,
-                Content = file.Content,
-                ParentFolderId = file.ParentFolderId
-            };
-            return Json(viewModel);
+            FileDTO file = _fileService.GetFile(fileId, userId);
+            return Json(file);
         }
 
         [Authorize]
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteFile(string id)
         {
             Guid fileId = Guid.Parse(id);

@@ -70,7 +70,7 @@ namespace CloudStorage.BLL.Services
             };
         }
 
-        public void UpdateFile(FileDTO file, Guid userId)
+        public FileDTO UpdateFile(FileDTO file, Guid userId)
         {
             FileModel fileModel = _unitOfWork.FileRepository.Get(file.Id);
             if (fileModel == null)
@@ -87,6 +87,13 @@ namespace CloudStorage.BLL.Services
             fileModel.Content = file.Content;
             _unitOfWork.FileRepository.Update(fileModel);
             _unitOfWork.Save();
+            return new FileDTO()
+            {
+                Id = fileModel.Id,
+                Name = fileModel.Name,
+                Content = fileModel.Content,
+                ParentFolderId = fileModel.ParentId
+            };
         }
 
         public void DeleteFile(Guid fileId, Guid userId)
@@ -124,7 +131,7 @@ namespace CloudStorage.BLL.Services
                 Id = fileModel.Id,
                 Name = fileModel.Name,
                 Content = fileModel.Content,
-                ParentFolderId = fileModel.Parent.Id
+                ParentFolderId = fileModel.ParentId
             };
         }
     }

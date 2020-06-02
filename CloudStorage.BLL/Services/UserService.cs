@@ -61,7 +61,6 @@ namespace CloudStorage.BLL.Services
             UserModel user = _unitOfWork.UserRepository.Get(id);
             if (user == null)
                 throw new Exception();
-
             return user.Name;
         }
 

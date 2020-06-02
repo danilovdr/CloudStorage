@@ -40,7 +40,7 @@ namespace CloudStorage.WEB.Controllers
         }
 
         [Authorize]
-        [HttpGet("folder/{folderId")]
+        [HttpGet("folder/{folderId}")]
         public IActionResult GetFolderPermission(string folderId)
         {
             Guid folderGuid = Guid.Parse(folderId);

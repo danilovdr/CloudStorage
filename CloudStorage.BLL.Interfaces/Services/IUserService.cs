@@ -7,6 +7,7 @@ namespace CloudStorage.BLL.Interfaces.Services
     {
         Guid Registration(UserDTO user);
         string GetUserId(string name, string password);
+        string GetUserName(Guid id);
         void ChangePassword(UserDTO user);
     }
 }

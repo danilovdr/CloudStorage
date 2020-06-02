@@ -81,7 +81,7 @@ namespace CloudStorage.BLL.Services
             _unitOfWork.Save();
         }
 
-        public List<FolderDTO> GetUserFolders(Guid parentFolderId, Guid userId)
+        public List<FolderDTO> GetUserFolders(Guid? parentFolderId, Guid userId)
         {
             List<FolderDTO> folders = new List<FolderDTO>();
             List<FolderModel> folderModels = _unitOfWork.FolderRepository
@@ -96,14 +96,14 @@ namespace CloudStorage.BLL.Services
                 {
                     Id = folder.Id,
                     Name = folder.Name,
-                    ParentFolderId = folder.Parent.Id
+                    ParentFolderId = folder.ParentId
                 };
                 folders.Add(folderDTO);
             }
             return folders;
         }
 
-        public List<FolderDTO> GetSharedFolders(Guid parentFolderId, Guid userId)
+        public List<FolderDTO> GetSharedFolders(Guid? parentFolderId, Guid userId)
         {
             List<FolderDTO> folders = new List<FolderDTO>();
             List<FolderPermissionModel> fpm = _unitOfWork.FolderPermissionRepository
@@ -120,14 +120,14 @@ namespace CloudStorage.BLL.Services
                 {
                     Id = folderModel.Id,
                     Name = folderModel.Name,
-                    ParentFolderId = folderModel.Parent.Id
+                    ParentFolderId = folderModel.ParentId
                 };
                 folders.Add(folderDTO);
             }
             return folders;
         }
 
-        public List<FileDTO> GetUserFiles(Guid parentFolderId, Guid userId)
+        public List<FileDTO> GetUserFiles(Guid? parentFolderId, Guid userId)
         {
             List<FileDTO> files = new List<FileDTO>();
             List<FileModel> fileModels = _unitOfWork.FileRepository
@@ -150,7 +150,7 @@ namespace CloudStorage.BLL.Services
             return files;
         }
 
-        public List<FileDTO> GetSharedFiles(Guid parentFolderId, Guid userId)
+        public List<FileDTO> GetSharedFiles(Guid? parentFolderId, Guid userId)
         {
             List<FileDTO> files = new List<FileDTO>();
             List<FilePermissionModel> fpm = _unitOfWork.FilePermissionRepository
